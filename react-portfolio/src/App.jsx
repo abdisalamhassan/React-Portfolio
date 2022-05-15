@@ -1,23 +1,22 @@
-import Topbar from "./components/topbar/Topbar";
-import Intro from "./components/intro/Intro";
-import Portfolio from "./components/portfolio/Portfolio";
-import Works from "./components/works/Works";
-import Contact from "./components/contact/Contact";
-import "./app.scss";
+import React, { useState, useEffect } from 'react';
+import Pages from './pages';
 
 function App() {
-  return (
-    <div className="app">
-      <Topbar />
-      <div className="sections">
-        <Intro/>
-        <Portfolio/>
-        <Works/>
-        <Contact/>
-      </div>
-      
-    </div>
-  );
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    // NOTE: Use your username below
+    fetch('https://gitconnected.com/v1/portfolio/abdisalamhassan')
+      .then(res => res.json())
+      .then(user => {
+        setUser(user);
+      });
+  }, []);
+
+  if (!user) {
+    return <div />;
+  }
+
+  return <Pages user={user} />;
 }
 
 export default App;
